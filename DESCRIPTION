@@ -1,0 +1,19 @@
+Package: PlasticityPhenotypes
+Type: Package
+Title: Creates phenotypes using features that correlate with PCA basis vectors
+Version: 0.1.0
+Author: Auja, D; Balsor, JL
+Maintainer: Balsor, JL <balsor94@gmail.com>
+Description: Package contains four functionsfor creating phenotypes. The first (identify basis vectors) identifies basis vectors that contain significant amount of cumulative variance in PCA. 
+    The second (plot basis vectors) plots the amplotudes of each variable about the PCA basis vectors identified using IdentifyBasisVectors.  
+    The third (FeatureMatrix) allows the user to create new features and test whether they are correlated with the basis vectors in PCA.
+    The fourth (Plasticity Phenotype) creates a color coded matrix of staacked horizontal bars representign the group averages for each feature identified in Feature Matrix.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
+Imports:tidyverse,
+        ggplot2,
+        FactoMineR, 
+        factoextra,
+        data.table
