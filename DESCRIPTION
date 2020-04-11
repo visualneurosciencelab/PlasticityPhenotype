@@ -1,7 +1,7 @@
 Package: PlasticityPhenotypes
 Type: Package
 Title: Creates a plasticity phenotype using features that correlate with PCA basis vectors
-Version: 0.1.0
+Version: 0.1.1
 Author: Ahuja, D; Balsor, JL
 Maintainer: Balsor, JL <balsor94@gmail.com>
 Description: Package contains four functions which work towards determining a plasticity phenotype. The first (cum_var) identifies basis vectors that contain a specified amount of cumulative variance in PCA. 
@@ -12,13 +12,11 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
-Imports:tidyverse,
-        ggplot2,
-        FactoMineR, 
-        factoextra,
-        data.table
-Depends:tidyverse,
-        ggplot2,
-        FactoMineR, 
-        factoextra,
-        data.table
+Imports:tidyverse(>= 1.3.0),
+        FactoMineR(>= 2.0), 
+        factoextra(>= 1.0.6),
+        data.table(>= 1.12.8)
+Depends:tidyverse(>= 1.3.0),
+        FactoMineR(>= 2.0), 
+        factoextra(>= 1.0.6),
+        data.table(>= 1.12.8)
