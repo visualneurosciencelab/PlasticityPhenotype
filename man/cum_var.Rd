@@ -17,3 +17,9 @@ Only those PCA basis vectors that contain the set threshold value of cumulative 
 \description{
 Calculates the number of sequential PCA basis vectors required to explain a desired amount of the total cumulative variance.
 }
+\examples{
+cum_var(
+     pca.eig.3 = pca.scaled$eig[,3],
+      thresh = 80
+      )
+}

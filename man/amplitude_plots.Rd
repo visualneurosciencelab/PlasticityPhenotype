@@ -17,3 +17,9 @@ A series of plots depicting the amplitude about a specified number of PCA basis 
 \description{
 Plots the amplitude of each variable for the specified number of PCA basis vectors identified using the cum_var function.  These plots are used to identify novel plasticity features by comparing the amplitudes of each variable about te basis vectors (e.g. to create variable sums/indices).
 }
+\examples{
+amplitude_plots(
+     cum.var = 4,
+     pca.var.coord = pca.scaled$var$coord
+     )
+}

@@ -5,6 +5,11 @@
 #' @param pca.eig.3 Consults the pca$eig$3 product contained in the PCA output from the FactoMineR package.
 #' @param thresh A desired threshold value of the percent total variance wished to be captured by sequential PCA basis vectors (values range from 0 – 100).
 #' @return Only those PCA basis vectors that contain the set threshold value of cumulative variance.
+#' @examples
+#' cum_var(
+#'      pca.eig.3 = pca.scaled$eig[,3],
+#'       thresh = 80
+#'       )
 #' @export
 
 cum_var <- function(pca.eig.3, thresh){
@@ -18,7 +23,8 @@ cum_var <- function(pca.eig.3, thresh){
 
     for (i in 1:length(pca.eig.3)) {
 
-      if(pca.eig.3[i] >= thresh){
+      if(pca.eig.3[i] >= thresh){ ## You can change the value of 80
+        ## to whatever minimum variance threshold you desire.
 
         cum.sum.counter <- i
 

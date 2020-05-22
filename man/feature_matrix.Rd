@@ -19,3 +19,10 @@ A colour-coded correlation matrix displaying the correlations between features (
 \description{
 Creates a colour-coded correlation matrix between the PCA basis vectors (determined using cum_var) and the matrix of features (determined manually after using amplitude_plots).  Color-coding is done for only those correlations that achieve statistical significance after adjusting for multiple comparisons.
 }
+\examples{
+feature_matrix(
+     corr.scores.pval = corr.scores.bfpval,
+     corr.scores.rval = corr.scores.rval,
+     thresh = 0.05
+      )
+}

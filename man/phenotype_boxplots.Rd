@@ -7,19 +7,55 @@
 phenotype_boxplots(
   feature_df = feature_df,
   phenotype_cols = phenotype.cols,
-  group_label = group_label
+  first_index_column = first_index_column,
+  group_label = group_label,
+  max_sum = max_sum,
+  point_size = point_size,
+  point_alpha = point_alpha,
+  aspect_ratio = aspect_ratio,
+  text_size = text_size
 )
 }
 \arguments{
-\item{feature_df}{The dataframe of features used to create phenotypes, containing group identifiers and the values ofr each feature.}
+\item{feature_df}{The dataframe of features used to create phenotypes, containing group identifiers and the values of each feature.}
 
 \item{phenotype_cols}{Taken from the plasticity_phenotype function; dataframe containing hexadecimal color-code for each feature.}
 
+\item{first_index_column}{A numeric value that indicates which column number contains the first index feature (column number -1). All subsequent feature columns are assumed to be indices. All preceding feature columns are assumed to be sums.}
+
 \item{group_label}{X-axis title.}
+
+\item{max_sum}{A vector that indicates the y-axis maximum value for each feature sum.}
+
+\item{point_size}{A numeric value that indicates the size of data points (Default value = 0.5 pt)}
+
+\item{point_alpha}{A numeric value that indicates the transparency (alpha) of data points (Default value = 0.5 pt)}
+
+\item{aspect_ratio}{A numeric value that indicates the aspect ratio of each plot (Default value= 5/7 or 0.714)}
+
+\item{text_size}{A numeric value indicating text size}
 }
 \value{
-A series of boxplots depicting the expression of each feature across groups, color-code matches phenotypes.
+A series of individual boxplots depicting the expression of each feature across groups, colour-code can optionally be set to match phenotypes.
 }
 \description{
 Plot individual boxplots for each feature, with color codes corresponding to the output of the plasticity_phenotype function.
+}
+\examples{
+phenotype_boxplots(
+     feature_df = merged.data2[,c("Condition",ordered_nf_colnames2)],
+     phenotype_cols = phenotype.cols,
+     max_sum = c(1.5,
+          max(merged.data2$'VGLUT\n'),
+          max(merged.data2$'Receptors Sum\n'),
+          max(merged.data2$'Scaffolding Sum\n'),
+          2),
+     group_label = "\nRearing Conditions",
+     first_index_column = 6,
+     point_size = 1.5,
+     point_alpha = 1,
+     aspect_ratio = 5/7,
+     text_size = 8
+     )
+
 }

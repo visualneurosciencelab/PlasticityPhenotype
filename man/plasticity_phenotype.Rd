@@ -5,33 +5,53 @@
 \title{Create plasticity phenotypes}
 \usage{
 plasticity_phenotype(
-  means = means,
-  first_mean_indices_column = first_mean_indices_column,
+  phenotype_data = phenotype_data,
+  first_index_column = first_index_column,
   feature_order = feature_order,
-  grouping_var = grouping_var,
+  group_label = group_label,
   group_select = group_select,
   indices_colors = indices_colors,
-  sums_colors = sums_colors
+  sums_colors = sums_colors,
+  translation = "local"
 )
 }
 \arguments{
-\item{means}{A data frame with the first column containing group labels and the remaining columns containing the average values of each significant plasticity feature across all groups; this function requires all sums to be grouped together and all indices to be grouped together. Note: Features that describe variable sums must precede features that describe variable indices (e.g. sums = columns 2-4, indices = columns 5 – 10).}
+\item{phenotype_data}{A data frame with the first column containing group labels and the remaining columns containing the average values of each significant plasticity feature across all groups; this function requires all sums to be grouped together and all indices to be grouped together. Note: Features that describe variable sums must precede features that describe variable indices (e.g. sums = columns 2-4, indices = columns 5 – 10).}
 
-\item{first_mean_indices_column}{Numerical value indicating the column number that marks the first feature index (plotted as green-yellow-red); all feature columns before this should be feature sums (plotted as grey-black).}
+\item{first_index_column}{Numerical value indicating the column number that marks the first feature index (plotted as green-yellow-red); all feature columns before this should be feature sums (plotted as grey-black).}
 
 \item{feature_order}{Numeric vector that describes the order of features to be plotted. The order of values in the vector represent the column numbers for each feature (c(1,3,4,5,2,6,7)). Default order is taken from the data matrix.}
 
-\item{grouping_var}{X-axis title. Default is "Experimental Conditions".}
+\item{group_label}{X-axis title. Default is "Experimental Conditions".}
 
 \item{group_select}{Numberic vector that restricts the phenotype to plot only a subset of group phenotypes. Groups phenotypes to be plotted are indicated using their row numbers (c(1,3,2,4). Default order taken from means dataframe row number (C(1,2,3,4)), unless groups are assigned as factor.}
 
 \item{indices_colors}{Character vector containing the color codes for indices color palette. Order is low, middle, high. Default is c("red", "yellow", "green").}
 
 \item{sums_colors}{Character vector containing the color codes for sums color palette. Order is low, middle, high. Default is c( "#d3d3d3","grey","black").}
+
+\item{translation}{Assign min/max data values for colour scales (feature indices only). Four options include: 'local', 'global', 'absolute', 'scaled'.
+local = local min/max determined within each feature. All features will have an absolute min (default=red) and max (default=green).
+global= global min/max determined across ALL features. There will only be one occurence of the global min (default=red) AND the global max (default=green) across all features.
+absolute= global absolute min/max determined across ALL features. There will only be one occurence of the global min (default=red) OR the global max (default=green) across all features. Min/max determined by greatest ABSOLUTE value.
+scaled= scaled min/max are set to -1 and +1 respectively. This setting ignores min/max in the data.
+Default= 'local'.}
 }
 \value{
-Plots phenotype for each group. Stores object plasticity.cols in your Global Environment. This object will be consulted using the phenotype_boxplots function for each feature across each group.
+Plots phenotype for each group. Stores object plasticity.cols in your Global Environment. This object will be consulted using the phenotype_boxplots function for each feature across each group. Stores object plas.phen in your Global Environment. plas.phen contains ggplot visualization of each comparison.
 }
 \description{
 Plots a series of stacked, colour-coded horizontal bars for each group. Color of each bar represents the group mean for the designated feature. Produces a phenotype for each group. Note: For all arguments matrix column numbers are identified as N-1 (e.g. column 4 is indexed as 3).
+}
+\examples{
+plasticity_phenotype(
+    phenotype_data = meds,
+    first_mean_index_column =  6,
+    group_label = "\nRearing Conditions",
+    translation = 'absolute',
+    group_select = 1:4,
+    indices_colors = c('red','yellow','green'),
+    sums_colors = c('white','grey','black'),
+    feature_order = 1:9
+    )
 }
