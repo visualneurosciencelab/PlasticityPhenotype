@@ -4,12 +4,13 @@ Title: Creates a plasticity phenotype using features that correlate with PCA bas
 Version: 0.1.1
 Author: Ahuja, D; Balsor, JL
 Maintainer: Balsor, JL <balsor94@gmail.com>
-Description: Package contains five functions which work towards determining a plasticity phenotype. 
+Description: Package contains six functions which work towards determining a plasticity phenotype. 
     The first (cum_var) identifies basis vectors that contain a specified amount of cumulative variance in PCA (e.g. PCA function in FactoMineR package). 
     The second (amplitude_plots) plots the amplitudes of each variable about the PCA basis vectors identified using cum_var.  
     The third (feature_matrix) allows the user to create new features, determined by the user based on the output of amplitude_plots. The function then tests whether they are correlated with the basis vectors obtained from the PCA (e.g. PCA function in FactoMineR package).
     The fourth (plasticity_phenotype) creates a colour-coded matrix of stacked horizontal bars representing the group averages for each feature identified in feature_matrix.
     The fifth (phenotype_boxplots) creates a series of boxplots to demonstrate expression levels of each feature, color of boxplots taken from plasticity_pheotype.
+    The sixth (bootstrap_phenotype) performs a bootstrap resampling -- with replacement -- for each experimental group across all plasticity features examined in phenotype_boxplots and plasticity_phenotype. This is done to examine which plasticity features across each experimental group are significantly greater than, less than, or non-significantly different from a specified reference group. The results are visualized on a custom colour-coded phenotype.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
