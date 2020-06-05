@@ -250,7 +250,7 @@ sig.phen <<- ggplot(long.phenotype.cols,
                    # labels=factor(means[,grouping_mean_column])[group_select],
                    position="bottom")+
   scale_y_discrete(expand=c(0,0),
-                   name="Plasticity features\n",
+                   name="Plasticity Features\n",
                    limits= rev(colnames(cols_df)[#2:ncol(means)
                      feature_order+1]),
                    position="left")+
