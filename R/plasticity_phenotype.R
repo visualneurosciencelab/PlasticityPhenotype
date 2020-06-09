@@ -4,7 +4,7 @@
 #' @param df_list A list of data frames with the rows containing group labels and the remaining columns containing the average/median values of each significant plasticity feature across all groups; this function requires all sums to be grouped together and all indices to be grouped together. Note: Features that describe variable sums must precede features that describe variable indices (e.g. sums = columns 1-4, indices = columns 5 – 10).
 #' @param first_index_column Numerical value indicating the column number that marks the first feature index (plotted as green-yellow-red); all feature columns before this should be feature sums (plotted as grey-black).
 #' @param feature_order Numeric vector that describes the order of features to be plotted. The order of values in the vector represent the column numbers for each feature (c(1,3,4,5,2,6,7)). Default order is taken from the data matrix.
-#' @param group_label X-axis title. Default is "Experimental Conditions".
+#' @param group_label A list containing the x-axis title for each corresponding data frame in "df_list". Default is "Experimental Conditions".
 #' @param indices_colors Character vector containing the color codes for indices color palette. Order is low, middle, high. Default is c("red", "yellow", "green").
 #' @param sums_colors Character vector containing the color codes for sums color palette. Order is low, middle, high. Default is c( "#d3d3d3","grey","black").
 #' @param translation Assign min/max data values for colour scales (feature indices only). Four options include: 'local', 'absolute'.
@@ -14,9 +14,9 @@
 #' @return Plots phenotype for each group. Stores object plasticity.cols in your Global Environment. This object will be consulted using the phenotype_boxplots function for each feature across each group. Stores object plas.phen in your Global Environment. plas.phen contains ggplot visualization of each comparison.
 #' @examples
 #'plasticity_phenotype(
-#'     phenotype_data = df_list,
+#'     df_list = df_list,
 #'     first_mean_index_column =  6,
-#'     group_label = "\nRearing Conditions",
+#'     group_label = c("\nRearing Conditions"),
 #'     translation = 'absolute',
 #'     indices_colors = c('red','yellow','green'),
 #'     sums_colors = c('white','grey','black'),
