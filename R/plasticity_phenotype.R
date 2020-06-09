@@ -292,7 +292,7 @@ plasticity_phenotype <- function(df_list = df_list,
           feat.max<-maxes[i]
           
           # feat.max <- max.sum
-          feat.min <- min.sum
+          feat.min <- min #.sum
           feat.range<-(feat.max - feat.min)/2
           feat.mid<- feat.max-feat.range
           #feat.mid <- max.sum/2
