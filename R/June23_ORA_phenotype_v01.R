@@ -145,13 +145,13 @@ ORA_phenotype <- function(features_df_row = features_df_row,
         cols_df[i
                 ,1+
                   j] <- if(CI.NormalMD1["5%"] > quart.comp[high.per]){
-                    print( "purple")
+                    #print( "purple")
                     "purple"
                   } else if (CI.NormalMD1["95%"] < quart.comp[low.per]) {
-                    print("yellow")
+                    #print("yellow")
                     "yellow"
                   } else {
-                    print('grey')
+                    #print('grey')
                     "#dce0e5"
                   }
         
