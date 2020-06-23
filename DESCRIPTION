@@ -11,6 +11,7 @@ Description: Package contains six functions which work towards determining a pla
     The fourth (plasticity_phenotype) creates a colour-coded matrix of stacked horizontal bars representing the group averages for each feature identified in feature_matrix.
     The fifth (phenotype_boxplots) creates a series of boxplots to demonstrate expression levels of each feature, color of boxplots taken from plasticity_pheotype.
     The sixth (bootstrap_phenotype) performs a bootstrap resampling -- with replacement -- for each experimental group across all plasticity features examined in phenotype_boxplots and plasticity_phenotype. This is done to examine which plasticity features across each experimental group are significantly greater than, less than, or non-significantly different from a specified reference group. The results are visualized on a custom colour-coded phenotype.
+    The seventh (ora_phenotype) performs an overrepresentation analysis for each experimental group across all plasticity features examined in phenotype_boxplots and plasticity_phenotype. This is done to examine which plasticity features across each experimental group are overrepresented, underrepresented, or indifferent greater from a specified reference group. 
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
