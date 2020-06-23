@@ -59,9 +59,6 @@ while (T) {
       sd_list[[counter]] <- as.data.frame(sd.Condition)
 
 
-      #print(#mean.Condition,
-      #      counter)
-
     }
 
   }
@@ -79,10 +76,6 @@ cols_df <- data.frame(matrix(ncol = ncol(features_df_row)+1,
 
 colnames(cols_df) <- c("Conditions",colnames(features_df_row))
 
-#cols_df[1,1] = reference_group
-#cols_df[1,2:ncol(cols_df)] <- "#dce0e5"
-
-#features_df_row
 while (T) {
   counter <- 0
 #i = 1
@@ -116,39 +109,6 @@ while (T) {
 
       CI.NormalMD1 <- quantile(mean.resamples.NormalMD1, c(0.001, 0.01,0.05,0.95, 0.99, 0.999))
 
-
-      #####print(paste(CI.NormalMD1,"//",counter))
-
-      # Norm.v.MD1<- if (CI.NormalMD1["5%"]< mean.Normal & mean.Normal < CI.NormalMD1["95%"]) {
-      #   #print("n.s.")
-      #   "n.s."
-      # } else if (CI.NormalMD1["1%"]< mean.Normal & mean.Normal< CI.NormalMD1["5%"]) {
-      #  # print("*")
-      #   "*"
-      # } else if (CI.NormalMD1["0.1%"]< mean.Normal & mean.Normal < CI.NormalMD1["1%"]) {
-      #  # print("**")
-      #   "**"
-      # } else if (mean.Normal < CI.NormalMD1["0.1%"]) {
-      #  # print("***")
-      #   "***"
-      # } else if (CI.NormalMD1["95%"]< mean.Normal & mean.Normal < CI.NormalMD1["99%"]) {
-      #  # print("*")
-      #   "*"
-      # } else if (CI.NormalMD1["99%"]< mean.Normal & mean.Normal < CI.NormalMD1["99.9%"]) {
-      #  # print("**")
-      #   "**"
-      # } else if (CI.NormalMD1["99.9%"]< mean.Normal) {
-      #  # print("***")
-      #   "***"
-      # } else{
-      #   #print("error")
-      #   "error"
-      #   }
-
-
-      ###
-
-
       Norm.v.MD1.pval<- if(mean.MD1<mean.Normal){
         #print(1-(sum(mean.resamples.NormalMD1<mean.Normal)/100000))
         1-(sum(mean.resamples.NormalMD1<mean.Normal)/100000)
@@ -159,55 +119,22 @@ while (T) {
         1-(sum(mean.resamples.NormalMD1 == mean.Normal)/100000)
       }
 
-      #print(paste(" feature p-val -- ", Norm.v.MD1.pval))
-
-      ###
-
-
-      #print(paste("adjusted p-val -- ",adj.pval))
-
-      # Norm.v.MD1.col<-if( (Norm.v.MD1.pval<adj.pval) && (mean.MD1<mean.Normal) ) {
-      #  # print("blue")
-      #   "blue"
-      # } else if ((Norm.v.MD1.pval<adj.pval) && (mean.MD1>mean.Normal)) {
-      #  # print("red")
-      #   "red"
-      # } else if ((Norm.v.MD1.pval>adj.pval)) {
-      #   #print("white")
-      #   "white"
-      # } else {
-      #   #print("error")
-      #   "error"
-      # }
-
-      # if(Norm.v.MD1.col == "blue"){
-      #     cols_df[i+1,1+j]  <- "blue"
-      # } else if (Norm.v.MD1.col == "red"){
-      #   cols_df[i+1,1+j] <- "red"
-      # } else if ( Norm.v.MD1.col == "white"){
-      #   cols_df[i+1,1+j] <- "white"
-      # }
 
       cols_df[i#+1
               ,1+
                 j] <- if( (Norm.v.MD1.pval<adj.pval) && (mean.MD1<mean.Normal) ) {
-        # print("blue")
+         print("blue")
          "blue"
       } else if ((Norm.v.MD1.pval<adj.pval) && (mean.MD1>mean.Normal)) {
-        # print("red")
+         print("red")
          "red"
       } else if ((Norm.v.MD1.pval>adj.pval)) {
-        #print("white")
+        print("white")
          "#dce0e5"
       } else {
-        #print("error")
+        print("error")
         "black"
       }
-
-
-
-
-
 
 
     }
@@ -216,6 +143,11 @@ while (T) {
   break
 }
 
+  
+    cols_df$Conditions <-  factor(cols_df$Conditions,
+                                levels = unlist(condition_list),
+                                ordered = T)
+  
 long.phenotype.cols <- gather(cols_df, feature, color, - Conditions )
 
 
