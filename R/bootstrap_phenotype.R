@@ -123,13 +123,13 @@ while (T) {
       cols_df[i#+1
               ,1+
                 j] <- if( (Norm.v.MD1.pval<adj.pval) && (mean.MD1<mean.Normal) ) {
-         print("blue")
+         #print("blue")
          "blue"
       } else if ((Norm.v.MD1.pval<adj.pval) && (mean.MD1>mean.Normal)) {
-         print("red")
+         #print("red")
          "red"
       } else if ((Norm.v.MD1.pval>adj.pval)) {
-        print("white")
+        #print("grey")
          "#dce0e5"
       } else {
         print("error")
