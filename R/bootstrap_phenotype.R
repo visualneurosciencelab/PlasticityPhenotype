@@ -91,7 +91,7 @@ while (T) {
       counter <- counter + 1
       mean.Normal <- mean_list[[j]][[1]]
       mean.MD1 = mean_list[[counter]][[1]]
-      adj.pval = 0.05/length_list[[1]][[1]]
+      adj.pval = 0.05/(ncol(features_df_row)*(length(condition_list)-1))
 
 
       sim.MD1 <- rnorm(1000000 #simulate population of MD that has ONE MILLION =N
