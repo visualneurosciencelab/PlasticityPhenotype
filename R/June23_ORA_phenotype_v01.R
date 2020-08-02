@@ -28,14 +28,20 @@
 #' )
 #' @export
 #'
-ORA_phenotype <- function(features_df_row = features_df_row,
-                                condition_list = condition_list,
-                                group_label = group_label,
-                                reference_group = reference_group,
-                          percentiles = percentiles){
 
+ORA_phenotype <- function(features_df_row = features_df_row,
+                          condition_list = condition_list,
+                          group_label = group_label,
+                          reference_group = reference_group,
+                          percentiles = percentiles){
+  
+  
+  
+  # Load the tidyverse.
   
   library(tidyverse)
+  
+  # If the 'percentiles' parameter is empty, assign it the default values of '0.25' & '0.75'.
   
   if(missing(percentiles)){
     percentiles = c(0.25,0.75)
@@ -43,38 +49,96 @@ ORA_phenotype <- function(features_df_row = features_df_row,
     percentiles <- percentiles
   }
   
-  low.per <- paste0(as.character(percentiles[1]*100),"%")
+  # Convert the decimals in 'percentiles' into percentage characters, and assign to 
+  #       'low.per' and 'high.per' for the low and high values, respectively.
+  
+  low.per  <- paste0(as.character(percentiles[1]*100),"%")
   high.per <- paste0(as.character(percentiles[2]*100),"%")
+  
+  # Assign a vector of 1 to the number of features to 'feature_order'. 
   
   feature_order = 1:ncol(features_df_row)
   
+  ### This multi-nested while-loop calculates the mean, SD, and number of data points
+  ###       for each experimental condition in 'condition_list' across each plasticity feature
+  ###       in 'features_df_row'. Store each mean, SD and length that is calculated in 
+  ###       3 different lists: mean_list, sd_list, and length_list. 
+  
+  # While True...
+  
   while (T) {
     
-    colnames(features_df_row)
+    # Initialize 3 empty lists:
+    #
+    #       1.) 'mean_list' -- A list of the average value of every feature across all experimental groups
+    #       2.) 'sd_list' -- A list of the standard deviations of every feature across all experimental groups
+    #       3.) 'length_list' -- A list of the number of data points for every feature across all experimental groups
+    
     mean_list <- list()
     sd_list <- list()
     length_list <- list()
+    
+    # Initialize a counter variable to the value of '0'.
+    
     counter <- 0
     
+    # For i in 1 to the number of experimental conditions...
+    
     for (i in 1:length(condition_list)) {
-      
+    
+      # For j in 1 to the number of features
+        
       for (j in 1:ncol(features_df_row)) {
         
-        counter <- counter+1
-       
+        # Increment the counter variable by '1' every time 'j' updates.
+        
+        counter <- counter + 1
+        
+        # For the currently indexed feature in 'features_df_row', retain only the 
+        #       data points for the currently-indexed experimental condition in 'condition_list'.
+        #       Store all such data points for the current experimental group at the current
+        #       feature in an object called 'SubsetCondition'. 
+        
         SubsetCondition <- as.data.frame(subset(features_df_row[,j],
                                                 grepl(condition_list[i],
                                                       rownames(features_df_row),
                                                       fixed = T)))
         
+        # Convert 'SubsetCondition' into a data frame and store it in the object 'mean.Condition'.
+        #
+        # Assign 'mean.Condition' a column name that denotes what calculation this number reflects --
+        #       in the case of 'mean.Condition', it is the an average value -- and also denotes what experimental group
+        #       and feature this value summarizes. 
+        #
+        # Convert 'mean.Condition' to a data frame and assign it as an instance of the 'mean_list' 
+        #       list. It's indexed according to whatever the current value of 'counter' is. 
+        
         mean.Condition <- as.data.frame(mean(SubsetCondition[,1], na.rm=TRUE))
         colnames(mean.Condition) <- paste0("Average -- ",colnames(features_df_row)[j]," (",condition_list[i],")")
         mean_list[[counter]] <- as.data.frame(mean.Condition)
+        
+        # Convert 'SubsetCondition' into a data frame and store it in the object 'length.Condition'.
+        #
+        # Assign 'length.Condition' a column name that denotes what calculation this number reflects --
+        #       in the case of 'length.Condition', it is the number of data points for an experimental group at a given feature -- 
+        #       and also denotes what experimental group and feature this value summarizes. 
+        #
+        # Convert 'length.Condition' to a data frame and assign it as an instance of the 'length_list' 
+        #       list. It's indexed according to whatever the current value of 'counter' is. 
         
         
         length.Condition <-  as.data.frame(length(SubsetCondition[,1]))
         colnames(length.Condition) <- paste0("Length -- ",colnames(features_df_row)[j]," (",condition_list[i],")")
         length_list[[counter]] <- as.data.frame(length.Condition)
+        
+        # Convert 'SubsetCondition' into a data frame and store it in the object 'sd.Condition'.
+        #
+        # Assign 'sd.Condition' a column name that denotes what calculation this number reflects --
+        #       in the case of 'sd.Condition', it is the standard deviation -- and also denotes what experimental group
+        #       and feature this value summarizes. 
+        #
+        # Convert 'sd.Condition' to a data frame and assign it as an instance of the 'sd_list' 
+        #       list. It's indexed according to whatever the current value of 'counter' is. 
         
         sd.Condition <-  as.data.frame(sd(SubsetCondition[,1]))
         colnames(sd.Condition) <- paste0("Std.Dev -- ",colnames(features_df_row)[j]," (",condition_list[i],")")
@@ -84,98 +148,150 @@ ORA_phenotype <- function(features_df_row = features_df_row,
       
     }
     
+    # Break out of this while-loop
     
     break
     
   }
   
+  ### Initialize an empty data frame with the same number of rows as there are items in the 
+  ###       'condition_list', and a number columns equal to 1 plus the number of columns in
+  ###       the 'features_df_row'. Call this empty data frame 'cols_df'.
   
   cols_df <- data.frame(matrix(ncol = ncol(features_df_row)+1,
                                nrow = length(condition_list)))
   
-  colnames(cols_df) <- c("Conditions",colnames(features_df_row))
+  ### Assign proper column headers to 'cols_df'. The first column will be 'Conditions',
+  ###       while the remaining headers will be the same headers as 'features_df_row'.
+  
+  colnames(cols_df) <- c("Conditions",
+                         colnames(features_df_row))
+  
+  ### This while-loop calculates the quantiles specified in 'percentiles' for the 
+  ###       currently indexed experimental group, and the (5%, 95%) quantiles for 
+  ###       the reference/normal group. This is done for the same feature across
+  ###       the normals and experimental groups. It then assesses whether the experimental
+  ###       group is over-represented/under-represented/similar to the 
+  ###       quantiles of the reference group. 
+  
+  # While true...
   
   while (T) {
     
+    # Initialize an empty 'counter' variable to '0'. 
+    
     counter <- 0
-
-    for (i in 1:(length(condition_list)
-    )) {
+  
+    # For i in 1 to the number of experimental groups...
       
-      cols_df[i
-              ,1] = condition_list[i
-                                   ]
-   
+    for (i in 1:(length(condition_list))) {
+      
+      # Assign the currently-indexed row of the 'Conditions' column
+      #       of 'cols_df' the name of the current experimental group
+      #       being analyzed. 
+      
+      cols_df[i,1] <- condition_list[i]
+      
+      # For j in 1 to the number of features...
+      
       for (j in 1:ncol(features_df_row)) {
         
-        counter <- counter + 1
-        mean.Normal <- mean_list[[j]][[1]]
-        mean.MD1 = mean_list[[counter]][[1]]
-        adj.pval = 0.05/length_list[[1]][[1]]
+        # Increment 'counter' by 1 every time 'j' updates. 
         
-         SubsetCondition <- as.data.frame(subset(features_df_row[,j],
-                                                 grepl(condition_list[i],
-                                                       rownames(features_df_row),
-                                                       fixed = T)))
+        counter <- counter + 1        
         
+        # For the currently indexed feature in 'features_df_row', retain only the 
+        #       data points for the currently-indexed experimental condition in 'condition_list'.
+        #       Store all such data points for the current experimental group at the current
+        #       feature in an object called 'SubsetCondition'. 
         
-        sim.MD1 <- rnorm(1000000 #simulate population of MD that has ONE MILLION =N
+        SubsetCondition <- as.data.frame(subset(features_df_row[,j],
+                                                grepl(condition_list[i],
+                                                      rownames(features_df_row),
+                                                      fixed = T)))
+        
+        # Simulate a normal distribution with N = 1 million, and ensure that the 
+        #       the mean and SD of this distribution are of the same feature in the 
+        #       normal condition. Assign these 1 million data points
+        #       to the object 'simulated.Norms'. 
+        
+        simulated.Norms <- rnorm(1000000 #simulate population of MD that has ONE MILLION =N
                          , mean = mean_list[[j]][[1]] #using the mean of MD
                          , sd =  sd_list[[j]][[1]] #and the stdev of MD
         )
         
         
+        # Resample with replacement from 'simulated.Norms' a total of 100'000 times. Each time, resample as many
+        #       data points as there are exist for the reference/normal group. Store this list 
+        #       of 100'000 instances of x many data points in 'resampled.Norms'.
         
         
-        
-        resamples.NormalMD1 <- lapply(1:100000 #pull from a data set ONE HUNDRED THOUSAND times
-                                      ,function(i) sample(sim.MD1           #the data set to pull from is the simulated MD population
+        resampled.Norms <- lapply(1:100000 #pull from a data set ONE HUNDRED THOUSAND times
+                                      ,function(i) sample(simulated.Norms           #the data set to pull from is the simulated MD population
                                                           , length_list[[1]][[1]]       #pull as many times as there are samples in NORMAL
                                                           , replace = T)   #replace the samples after you pull them so each scenario has same P of happening
         )
         
+        # Calculate the average of each of the 100'000 groups of resampled data points, and store in 'mean.resampled.Norms'. 
         
-        mean.resamples.NormalMD1 <- sapply(resamples.NormalMD1, mean)
+        mean.resampled.Norms <- sapply(resampled.Norms, mean)
         
-        CI.NormalMD1 <- quantile(mean.resamples.NormalMD1, c(0.05,0.95))
+        # Calculate the 5% and 95% quantiles on the data points stored in 'mean.resampled.Norms'. Assign these points to 'quart.Norms'. 
         
-        quart.comp <- quantile(SubsetCondition[,1],percentiles)
+        quart.Norms <- quantile(mean.resampled.Norms, c(0.05,0.95))
         
+        # Calculate the specified 'percentiles' of the data points stored in 'SubsetCondition'. 
         
-        cols_df[i
-                ,1+
-                  j] <- if(CI.NormalMD1["5%"] > quart.comp[high.per]){
-                    #print( "purple")
-                    "purple"
-                  } else if (CI.NormalMD1["95%"] < quart.comp[low.per]) {
-                    #print("yellow")
-                    "yellow"
-                  } else {
-                    #print('grey')
-                    "#dce0e5"
-                  }
+        quart.Comps <- quantile(SubsetCondition[,1],percentiles)
         
+        # If the 5% quantile of 'quart.Norms' is greater than the highest percentile of 'quart.Comps',
+        #       then assign the relevant cell in 'cols_df' the colour "purple" --> 'under-represented'.
+        #
+        # Else, if the 95% quantile of 'quart.Norms' is less than the lowest percentile of 'quart.Comps',
+        #       then assign the relevant cell in 'cols_df' the colour "yellow" --> 'over-represented'.
+        #
+        # Else, in all other cases,assign the relevant cell in 'cols_df' the colour "grey" 
+        
+        cols_df[i,1+j] <- if(quart.Norms["5%"] > quart.Comps[high.per]){
+                                    #print( "purple")
+                                    "purple"
+                                  } else if (quart.Norms["95%"] < quart.Comps[low.per]) {
+                                    #print("yellow")
+                                    "yellow"
+                                  } else {
+                                    #print('grey')
+                                    "#dce0e5"
+                                  }
+                        
         
         
         
       }
       
     }
+    
+    # Break out of the while-loop. 
+    
     break
   }
+  
+  # Order the levels of 'cols_df$Conditions' based on the predefined 
+  #       order of the 'conditions_list'. This is the order that
+  #       conditions will appear on the x-axis of the phenotype.
   
   cols_df$Conditions <-  factor(cols_df$Conditions,
                                 levels = unlist(condition_list),
                                 ordered = T)
   
+  # Convert the 'cols_df' object from wide to long format
+  
   long.phenotype.cols <- gather(cols_df, feature, color, - Conditions )
   
-
-  
+  # Create the ORA phenotype, and assign it to an object, 'ora.phen'.
   
   ora.phen <<- ggplot(long.phenotype.cols,
-                     aes(x =  Conditions,
-                         y = feature)) +
+                      aes(x =  Conditions,
+                          y = feature)) +
     geom_tile(data = long.phenotype.cols,
               width=0.95,
               height=0.95,
